@@ -1,6 +1,7 @@
 /node_modules
 /public/assets
 /public/frontend
+/public/landing
 /public/storage
 /storage/*.key
 /storage/img/
