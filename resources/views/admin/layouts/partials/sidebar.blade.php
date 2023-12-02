@@ -49,6 +49,13 @@
                 <span>Contact Us</span>
             </a>
         </li><!-- End Dashboard Nav -->
+        <li class="nav-item">
+            <a class="nav-link {{ in_array($route, ['admin.newsletter']) ? 'nav-item-active-a' : 'collapsed' }}"
+                href="{{ route('admin.newsletter') }}">
+                <i class="bi bi-newspaper"></i>
+                <span>Newsletter</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
 
 {{--
         <li class="nav-heading">Pages</li>

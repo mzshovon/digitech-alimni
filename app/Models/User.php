@@ -50,13 +50,11 @@ class User extends Authenticatable
         return $this->hasOne(MembershipDetail::class);
     }
 
-    public function getUsersList($limit = null, array|null $values = null, $from = null, $to = null, $payment = null, $blood_group = null, $batch = null, $order = "DESC")
+    public function getUsersList($limit = null, array|null $values = null, $from = null, $to = null, $payment = null, $blood_group = null, $batch = null, $order = "DESC", $role = null)
     {
         $data = $this->with("members","roles")->orderBy("updated_at", $order);
         $data_range = setStartEndDayForFiltering($from, $to);
-        $data->when($values, function($q) use ($values){
-            $q->get($values);
-        })->when($from, function($q) use ($data_range){
+        $data->when($from, function($q) use ($data_range){
             $q->whereBetween("created_at", $data_range);
         })->when($batch, function($q) use ($batch){
             $q->whereHas('members', function($sq) use ($batch) {
@@ -70,10 +68,22 @@ class User extends Authenticatable
             $q->whereHas('members', function($sq) use ($payment) {
                 $sq->wherePayment($payment);
             });
+        })->when($role, function($q) use ($role){
+            $q->whereHas('roles', function($sq) use ($role){
+                $sq->whereName($role);
+            });
         })->when($limit, function($q) use ($limit){
             $q->take($limit);
         });
-        return $data->get()->toArray();
+        return $values ? $data->get($values)->toArray() : $data->get()->toArray();
+    }
+
+    public function getUserValueList($values)
+    {
+        $data = $this->with("members","roles")->whereHas('roles', function($q) {
+            $q->whereName("user");
+        })->orderBy("updated_at", "DESC");
+        return $data->get($values)->toArray();
     }
 
     /**

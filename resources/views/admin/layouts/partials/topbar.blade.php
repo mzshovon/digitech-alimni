@@ -7,8 +7,8 @@
 
       <div class="d-flex align-items-center justify-content-between">
         <a href="{{route('admin.dashboard')}}" class="logo d-flex align-items-center">
-          <img src="{{URL::to('/')}}/public/frontend/images/CUMA-Logo.png" alt="">
-          <span class="d-none d-lg-block">{{config('app.name')}}</span>
+          <img src="{{URL::to('/')}}/public/landing/img/logo.png" alt="">
+          {{-- <span class="d-none d-lg-block">{{config('app.name')}}</span> --}}
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
       </div><!-- End Logo -->
@@ -35,7 +35,7 @@
           <li class="nav-item dropdown pe-3">
 
             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-              <img src={{auth()->user()->members->image_path ? URL::to("/") ."/". auth()->user()->members->image_path : URL::to("/") ."/public/frontend/images/CUMA-Logo.png"}} alt="Profile" class="rounded-circle">
+              <img src={{auth()->user()->members->image_path ? URL::to("/") ."/". auth()->user()->members->image_path : URL::to('/')."/public/landing/img/logo.png"}} alt="Profile" class="rounded-circle">
               <span class="d-none d-md-block dropdown-toggle ps-2">{{auth()->user()->name}}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

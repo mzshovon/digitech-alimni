@@ -10,8 +10,8 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="{{URL::to('/')}}/public/frontend/images/CUMA-Logo.png" rel="icon">
-  <link href="{{URL::to('/')}}/public/frontend/images/CUMA-Logo.png" rel="apple-touch-icon">
+  <link href="{{URL::to('/')}}/public/landing/img/favicon.png" rel="icon">
+  <link href="{{URL::to('/')}}/public/landing/img/favicon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">

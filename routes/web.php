@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UtilityController;
@@ -40,15 +41,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     //     Route::patch('/update/{id}', [RolesController::class, 'update'])->name('updateRoles');
     // });
 
-    // // Room types routes
-    // Route::group(['prefix' => 'room-types'], function() {
-    //     Route::get('/', [RoomTypesController::class, 'index'])->name('roomTypesList');
-    //     Route::get('/create', [RoomTypesController::class, 'create'])->name('createRoomType');
-    //     Route::get('/edit/{room_type_id}', [RoomTypesController::class, 'edit'])->name('editRoomType');
-    //     Route::post('/store', [RoomTypesController::class, 'create'])->name('storeRoomType');
-    //     Route::delete('/delete/{room_type_id}', [RoomTypesController::class, 'destroy'])->name('deleteRoomType');
-    // });
-
     // Activity Log routes
     // Route::group(['prefix' => 'activity-log'], function() {
     //     Route::get('/', [AdminUtilityController::class, 'getActivityLogs'])->name('activityLogs');
@@ -84,6 +76,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
         Route::post('/update/{id}', [PaymentController::class, 'update'])->name('payment.update');
         Route::get('/updateStatus/{id}/{status}', [PaymentController::class, 'updateStatus'])->name('payment.update.status');
+    });
+
+    Route::group(['prefix' => 'newsletter'], function() {
+        Route::get('/', [NewsLetterController::class, 'view'])->name('newsletter');
+        Route::get('/create', [NewsLetterController::class, 'create'])->name('newsletter.create');
+        Route::get('/filter', [NewsLetterController::class, 'filter'])->name('newsletter.filter');
+        Route::post('/', [NewsLetterController::class, 'store'])->name('newsletter.store');
+        Route::post('/update/{id}', [NewsLetterController::class, 'update'])->name('newsletter.update');
+        Route::get('/updateStatus/{id}/{status}', [NewsLetterController::class, 'updateStatus'])->name('newsletter.update.status');
     });
 
     Route::group(['prefix' => 'error'], function() {

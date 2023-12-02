@@ -7,9 +7,9 @@
 {{--  <script src="/cuma/public/') }}admin/assets/vendor/jqueryui/js/jquery-ui.min.js"></script>  --}}
 {{--  <script src="/cuma/public/') }}admin/assets/vendor/chart.js/chart.umd.js"></script>  --}}
 {{--  <script src="/cuma/public/') }}admin/assets/vendor/echarts/echarts.min.js"></script>  --}}
-{{--  <script src="/cuma/public/') }}admin/assets/vendor/quill/quill.min.js"></script>  --}}
-<script src="{{URL::to('/')}}/public/assets/vendor/simple-datatables/simple-datatables.js"></script>
 <script src="{{URL::to('/')}}/public/assets/vendor/tinymce/tinymce.min.js"></script>
+{{-- <script src="{{URL::to('/')}}/public/assets/vendor/quill/quill.min.js"></script> --}}
+<script src="{{URL::to('/')}}/public/assets/vendor/simple-datatables/simple-datatables.js"></script>
 {{--  <script src="/cuma/public/') }}admin/assets/vendor/php-email-form/validate.js"></script>  --}}
 
 <script src="{{URL::to('/')}}/public/assets/js/main.js"></script>
