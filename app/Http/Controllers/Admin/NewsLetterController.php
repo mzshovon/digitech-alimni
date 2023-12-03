@@ -59,7 +59,7 @@ class NewsLetterController extends Controller
         }
         [$status, $message] = $newsLetter->storeNewsLetterInfo($members, $batch, $emails, $start_period, $end_period, $template_name, $news);
         Session::put(($status == Response::HTTP_OK) ? "success" : "error", $message);
-        return redirect()->route('admin.payment');
+        return redirect()->route('admin.newsletter');
     }
 
     public function update($userId, PaymentStoreRequest $request,PaymentService $newsLetter)

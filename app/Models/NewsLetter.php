@@ -9,6 +9,14 @@ class NewsLetter extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'template_name',
+        'status',
+        'news',
+        'user_id'
+    ];
+
+
     public function user()
     {
         return $this->belongsTo(User::class);

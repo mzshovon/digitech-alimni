@@ -4,6 +4,7 @@ namespace App\Http\Services\Utilities;
 
 use App\Exports\ExportExcel;
 use App\Http\Resources\NewsLetterResource;
+use App\Jobs\SendQueueEmail;
 use App\Models\NewsLetter;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -62,12 +63,18 @@ class NewsLetterService {
             $user = $this->user;
             $newsLetter = $this->newsLetter;
             $userId = getUserInfo()->id;
-            $getEmailList = $user->getUsersList(null, ['email'], null, null, $members, null, $batch, "DESC", "user");
-            if(count($getEmailList)) {
-                $emailList = array_column($getEmailList, 'email');
-                dd($emailList);
-                if($newsLetter->createNewNewsLetterRequest($data)) {
-                    return [Response::HTTP_OK, "NewsLetter Request Updated Successfully. Admin will review and confirm your NewsLetter record soon."];
+            $getUserList = $user->getUsersList(null, ['email','name'], null, null, $members, null, $batch, "DESC", "user");
+            if(count($getUserList)) {
+                $job = (new SendQueueEmail($news, $getUserList))
+            	->delay(now()->addSeconds(1));
+                if(dispatch($job)) {
+                    $data['template_name'] = "default";
+                    $data['news'] = $news;
+                    $data['status'] = "processing";
+                    $data['user_id'] = getUserInfo()->id;
+                    if($newsLetter::createNewsLetterRequest($data)) {
+                        return [Response::HTTP_OK, "NewsLetters are sent. Please wait until the mail operation is end"];
+                    }
                 }
             } else {
                 return [Response::HTTP_NOT_FOUND, "No user email found"];

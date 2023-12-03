@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string("template_name",455)->nullable();
             $table->longText("news");
-            $table->string("bulk_id", 455);
+            $table->string("bulk_id", 455)->nullable();
             $table->string("start_date")->nullable();
             $table->string("end_date")->nullable();
             $table->string("starts_at")->nullable();
