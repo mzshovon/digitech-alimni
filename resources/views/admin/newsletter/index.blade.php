@@ -27,85 +27,29 @@
                                         <a href="{{route('admin.newsletter.create')}}" class="btn btn-success btn-sm">Add new</a>
                                     </h5>
                             </div>
-                            @if (auth()->user()->hasRole('superadmin'))
-                            <div class="card">
-                                <div class="card-header">Filter</div>
-                                <div class="card-body pt-4 pb-4">
-                                    <form class="row" method="GET" action="{{route('admin.payment.filter')}}">
-                                        @csrf
-                                        <div class="col-md-3">
-                                            <div class="input-group">
-                                              <select class="form-select multiple-columns" name="columns[]" multiple="multiple">
-                                                  <option value="Name">Name</option>
-                                                  <option value="Email">Email</option>
-                                                  <option value="Contact Number">Contact Number</option>
-                                                  <option value="Payment Channel">Payment Channel</option>
-                                                  <option value="Transaction ID">Transaction ID</option>
-                                                  <option value="Amount">Amount</option>
-                                                  <option value="Status">Status</option>
-                                                  <option value="Submitted At">Submitted At</option>
-                                                </select>
-                                            </div>
-                                          </div>
-                                        <div class="col-md-3">
-                                            <select class="form-select" name="status" aria-label="Default select example">
-                                                <option selected value="">Choose Status</option>
-                                                <option value="pending">Pending</option>
-                                                <option value="approved">Approved</option>
-                                                <option value="declined">Declined</option>
-                                              </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                          <input type="text" class="form-control" id="validationDefault01" placeholder="From" name="from" onfocus="(this.type='date')" onblur="(this.type='text')" >
-                                        </div>
-                                        <div class="col-md-3">
-                                          <input type="text" class="form-control" id="validationDefault01" placeholder="To" name="to" onfocus="(this.type='date')" onblur="(this.type='text')" >
-                                        </div>
-                                        <div class="col-md-3">
-                                          <button class="btn btn-primary" type="submit"><i class="bi bi-download"></i> Download</button>
-                                        </div>
-                                      </form>
-                                    </div>
-                                    </div>
-                            </div>
-                            @endif
                             <!-- Table with stripped rows -->
                             <table class="table datatable">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Template Name</th>
-                                        <th scope="col">News</th>
                                         <th scope="col">Start Date</th>
                                         <th scope="col">End Date</th>
                                         <th scope="col">Sender</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Send At</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($newsLetters as $key => $newsLetter)
                                         <tr>
-                                            <th scope="row">{{ ++$key }}</th>
+                                            <th scope="row">{{ $key++ }}</th>
                                             <td>{{ $newsLetter['template_name'] }}</td>
-                                            <td>{{ $newsLetter['news'] }}</td>
                                             <td>{{ $newsLetter['start_date']}}</td>
                                             <td>{{ $newsLetter['end_date'] }}</td>
                                             <td>{{ $newsLetter['operated_by'] }}</td>
-                                            <td><button class="btn btn-{{$newsLetter['status'] == 'pending' ? 'warning' : ($newsLetter['status'] == 'approved' ? 'success' : 'danger')}} btn-sm">{{ ucwords($newsLetter['status']) }}</button></td>
-                                            <td>{{ \Carbon\Carbon::parse($newsLetter['created_at'])->format("d, M Y") }}</td>
-                                            <td>
-                                                @if (auth()->user()->hasRole('superadmin'))
-                                                    @if (in_array($newsLetter['status'], ["pending", "declined"]))
-                                                        <a href="{{route('admin.payment.update.status',['id' => $newsLetter['id'], 'status' => 'approved'])}}" class="btn btn-outline-success btn-sm"><i class="bi bi-check-circle"></i> Approve</a>
-                                                        <a href="{{route('admin.payment.update.status',['id' => $newsLetter['id'], 'status' => 'declined'])}}" class="btn btn-outline-danger btn-sm"><i class="bi bi-slash-circle"></i> Decline</a>
-                                                    @else
-                                                        <a href="{{route('admin.payment.update.status',['id' => $newsLetter['id'], 'status' => 'pending'])}}" class="btn btn-outline-warning btn-sm"><i class="bi bi-slash-circle"></i> Pending</a>
-                                                    @endif
-
-                                                @endif
-                                            </td>
+                                            <td>{{ $newsLetter['send_at'] }}</td>
+                                            <td><button class="btn btn-{{$newsLetter['status'] == 'Processing' ? 'warning' : ($newsLetter['status'] == 'Sent' ? 'success' : 'danger')}} btn-sm">{{ ucwords($newsLetter['status']) }}</button></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -50,7 +50,7 @@ class User extends Authenticatable
         return $this->hasOne(MembershipDetail::class);
     }
 
-    public function getUsersList($limit = null, array|null $values = null, $from = null, $to = null, $payment = null, $blood_group = null, $batch = null, $order = "DESC", $role = null)
+    public function getUsersList($limit = null, array|null $values = null, $from = null, $to = null, $payment = null, $blood_group = null, $batch = null, $order = "DESC", $role = null, $inParam = null, $inCompareValue = null)
     {
         $data = $this->with("members","roles")->orderBy("updated_at", $order);
         $data_range = setStartEndDayForFiltering($from, $to);
@@ -72,6 +72,8 @@ class User extends Authenticatable
             $q->whereHas('roles', function($sq) use ($role){
                 $sq->whereName($role);
             });
+        })->when($inParam, function($q) use ($inParam, $inCompareValue){
+                $q->whereIn($inParam, $inCompareValue);
         })->when($limit, function($q) use ($limit){
             $q->take($limit);
         });

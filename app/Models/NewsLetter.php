@@ -27,6 +27,11 @@ class NewsLetter extends Model
         return self::create($data);
     }
 
+    public static function insertNewsLetterRequest(array $data)
+    {
+        return self::insert($data);
+    }
+
         /**
      * @param null $limit
      * @param array|null|null $values
@@ -43,7 +48,6 @@ class NewsLetter extends Model
         $data->when($userId, function($q) use ($userId){
             $q->whereUserId($userId);
         })->when($status, function($q) use ($status){
-            dd($status);
             $q->whereStatus($status);
         })->when($from, function($q) use ($from, $to){
             $q->whereBetween("created_at", [$from." 00:00:00", $to." 23:59:00"]);

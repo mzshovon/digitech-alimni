@@ -3,22 +3,25 @@
 namespace App\Http\Resources;
 
 use Carbon\Carbon;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class NewsLetterResource extends ResourceCollection
 {
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+        $this->resource = $resource;
+    }
     /**
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request) : array
+    public function toArray($request)
     {
-        $data = [];
-        foreach ($request as $newsLetter) {
-            $data = [
+        return collect($this->resource)->map(function($newsLetter){
+            return [
                 "template_name" => $newsLetter['template_name'],
                 "news" => $newsLetter['news'],
                 "start_date" => $newsLetter['start_date'],
@@ -29,7 +32,6 @@ class NewsLetterResource extends ResourceCollection
                 "status" => ucfirst($newsLetter['status']),
                 "send_at" => Carbon::parse($newsLetter['created_at'])->format('d, M Y'),
             ];
-        }
-        return $data;
+        })->all();
     }
 }

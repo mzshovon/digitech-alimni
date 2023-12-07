@@ -7,6 +7,7 @@ use App\Http\Resources\NewsLetterResource;
 use App\Jobs\SendQueueEmail;
 use App\Models\NewsLetter;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,9 +26,9 @@ class NewsLetterService {
     {
         $newsLetter = $this->newsLetter;
         $userId = (getUserInfo()->hasRole("superadmin") || getUserInfo()->hasRole("admin")) ? null : getUserInfo()->id;
-        $data = $newsLetter->getNewsLetters($userId);
-        $resourceData = NewsLetterResource::collection($data)->toArray($data);
-        return $resourceData ?? [];
+        $resourceData = new NewsLetterResource($newsLetter->getNewsLetters($userId));
+        $parsedResourceData = $resourceData->toArray($resourceData);
+        return $parsedResourceData ?? [];
     }
 
     public function filterNewsLettertData($from, $to, $status)
@@ -63,16 +64,22 @@ class NewsLetterService {
             $user = $this->user;
             $newsLetter = $this->newsLetter;
             $userId = getUserInfo()->id;
-            $getUserList = $user->getUsersList(null, ['email','name'], null, null, $members, null, $batch, "DESC", "user");
+            $inArrayCheck = null;
+            if(count($emails) > 0) {
+                $inArrayCheck = "email";
+            }
+            $getUserList = $user->getUsersList(null, ['email','name'], null, null, $members, null, $batch, "DESC", "user", $inArrayCheck, $emails);
             if(count($getUserList)) {
-                $job = (new SendQueueEmail($news, $getUserList))
-            	->delay(now()->addSeconds(1));
+                $job = (new SendQueueEmail($news, $getUserList))->delay(now()->addSeconds(1));
                 if(dispatch($job)) {
-                    $data['template_name'] = "default";
+                    $data['template_name'] = $template_name ?? "default";
                     $data['news'] = $news;
                     $data['status'] = "processing";
                     $data['user_id'] = getUserInfo()->id;
-                    if($newsLetter::createNewsLetterRequest($data)) {
+                    $data['start_date'] = Carbon::parse($start_period)->format('d-m-Y') ?? Carbon::now()->format('d-m-Y');
+                    $data['end_date'] = Carbon::parse($start_period)->format('d-m-Y') ?? Carbon::now()->format('d-m-Y');
+                    $data['created_at'] = Carbon::now();
+                    if($newsLetter::insertNewsLetterRequest($data)) {
                         return [Response::HTTP_OK, "NewsLetters are sent. Please wait until the mail operation is end"];
                     }
                 }
