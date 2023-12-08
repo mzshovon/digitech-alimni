@@ -119,12 +119,13 @@
 
 @push('script')
 
-<script src="{{ asset('/') }}admin/assets/js/call.js"></script>
-<script src="{{ asset('/') }}admin/assets/vendor/echarts/echarts.min.js"></script>
-<script src="{{ asset('/') }}admin/assets/vendor/chart.js/chart.umd.js"></script>
-<script src="{{ asset('/') }}admin/assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="{{URL::to('/')}}/public/assets/js/call.js"></script>
+<script src="{{URL::to('/')}}/public/assets/vendor/echarts/echarts.min.js"></script>
+<script src="{{URL::to('/')}}/public/assets/vendor/chart.js/chart.umd.js"></script>
+<script src="{{URL::to('/')}}/public/assets/vendor/apexcharts/apexcharts.min.js"></script>
 
 <script>
+    chartsForVisitors(JSON.parse('{!! $countInfo !!}'));
 </script>
 @endpush
 
