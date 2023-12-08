@@ -25,7 +25,8 @@
                                 <div class="col-10">
                                     <h5 class="card-title">{{ $title }}
                                         <a href="javascript:void(0)" class="btn btn-success btn-sm"
-                                        onclick="createEditModalShow(null,null,null,null)">Add new</a>
+                                        onclick="createEditModalShow(null,null,null,null)">Add Manual Payment</a>
+                                        <a href="{{route('admin.payment.charge')}}" class="btn btn-success btn-sm">Stripe Payment</a>
                                     </h5>
                             </div>
                             @if (auth()->user()->hasRole('superadmin'))
@@ -137,14 +138,6 @@
                                     <div class="modal-body">
                                         <input type="hidden" name="id" id="id_user">
                                         <div class="modal-body">
-                                            {{-- <ul class="list-group">
-                                                <li class="list-group-item"><img src="https://freelogopng.com/images/all_img/1656235223bkash-logo.png" style="height: 20px;width:20px"/> Bkash Payment Number: 01XXXXXXXXX</li>
-                                                <li class="list-group-item"><i class="bi bi-collection me-1 text-primary"></i> Bank Payment Number: 1XXX34XXXXXXXX </li>
-                                              </ul> --}}
-                                              {{-- <div class="card-body">
-                                                <h5 class="card-title">Vertical Pills Tabs</h5> --}}
-
-                                                <!-- Vertical Pills Tabs -->
                                                 <div class="d-flex align-items-start">
                                                   <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                                     <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true" tabindex="-1" ><img src="https://freelogopng.com/images/all_img/1656235223bkash-logo.png" style="height: 20px;width:20px"/> Bkash</button>
@@ -164,16 +157,11 @@
                                                     </div>
                                                   </div>
                                                 </div>
-                                                <!-- End Vertical Pills Tabs -->
-
-                                              {{-- </div> --}}
                                               <br>
                                             <select name="payment_channel" id="id_payment_channel" class="form-control">
                                                 <option id="option_idBkash" value="Bkash">Bkash</option>
-                                                {{-- <option id="option_idNagad" value="Nagad">Nagad</option> --}}
                                                 <option id="option_idBEFTN" value="BANK">BEFTN</option>
                                                 <option id="option_idCheque" value="Cheque">Cheque</option>
-                                                {{-- <option id="option_idPO" value="PO">PO</option> --}}
                                             </select>
                                             <br>
                                             <input type="number" class="form-control" placeholder="Enter Payment Amount"
@@ -195,8 +183,6 @@
                             </div>
                         </div>
                     </div>
-                    {{--  assign modal end  --}}
-
                 </div>
             </div>
         </section>
