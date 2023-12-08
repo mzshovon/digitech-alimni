@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUtilityController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\PaymentController;
@@ -42,9 +43,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     // });
 
     // Activity Log routes
-    // Route::group(['prefix' => 'activity-log'], function() {
-    //     Route::get('/', [AdminUtilityController::class, 'getActivityLogs'])->name('activityLogs');
-    // });
+    Route::group(['prefix' => 'activity-log'], function() {
+        Route::get('/', [AdminUtilityController::class, 'getActivityLogs'])->name('activityLogs');
+    });
 
     // User routes
     Route::group(['prefix' => 'member'], function() {
