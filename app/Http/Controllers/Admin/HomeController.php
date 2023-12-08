@@ -15,6 +15,7 @@ class HomeController extends Controller
         $data['memberCount'] = $dashboardService->getMembersCount();
         $data['paymentCount'] = $dashboardService->getPaymentCount();
         $data['contactCount'] = $dashboardService->getContactCount();
+        $data['countInfo'] = $dashboardService->getDashboardActivityData();
         return view('admin.dashboard', $data);
     }
 }

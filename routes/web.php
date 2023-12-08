@@ -25,14 +25,14 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [LandingPageController::class, 'viewLandingPage'])->name('homepage');
+Route::get('/', [LandingPageController::class, 'viewLandingPage'])->name('homepage')->middleware('visitors:home');
 Route::get('/register', [LandingPageController::class, 'viewLandingPage'])->name('registration');
 
 Auth::routes();
 
 // admin routes
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function() {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard')->middleware('visitors:dashboard');
     // // Roles routes
     // Route::group(['prefix' => 'roles'], function() {
     //     Route::get('/', [RolesController::class, 'index'])->name('rolesList');
@@ -49,7 +49,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     // User routes
     Route::group(['prefix' => 'member'], function() {
-        Route::get('/', [UserController::class, 'getUsers'])->name('usersList');
+        Route::get('/', [UserController::class, 'getUsers'])->name('usersList')->middleware('visitors:member');
         Route::get('/filter', [UserController::class, 'filter'])->name('usersFilter');
         Route::get('/create', [UserController::class, 'createUser'])->name('createUser');
         Route::post('/store', [UserController::class, 'storeUser'])->name('storeUser');
@@ -72,7 +72,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     });
 
     Route::group(['prefix' => 'payment'], function() {
-        Route::get('/', [PaymentController::class, 'view'])->name('payment');
+        Route::get('/', [PaymentController::class, 'view'])->name('payment')->middleware('visitors:payment');
         Route::get('/filter', [PaymentController::class, 'filter'])->name('payment.filter');
         Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
         Route::post('/update/{id}', [PaymentController::class, 'update'])->name('payment.update');

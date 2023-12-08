@@ -8,9 +8,9 @@ enum FeatureEnum: string {
     // case Login = 'login';
     // case Register = 'register';
     case Home = 'home';
+    case Dashboard = 'dashboard';
     case ContactUs = 'contact-us';
-    case Romms = 'rooms';
-    case Hotels = 'hotels';
-    case AboutUs = 'about-us';
-    case News = 'news';
+    case NewsLetter = 'newsletter';
+    case Members = 'members';
+    case Payment = 'payment';
 }
