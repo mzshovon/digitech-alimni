@@ -73,6 +73,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
 
     Route::group(['prefix' => 'payment'], function() {
         Route::get('/', [PaymentController::class, 'view'])->name('payment')->middleware('visitors:payment');
+        Route::get('/charge', [PaymentController::class, 'charge'])->name('payment.charge')->middleware('visitors:payment');
+        Route::post('/store/stripe', [PaymentController::class, 'stripePayment'])->name('payment.stripe')->middleware('visitors:payment');
         Route::get('/filter', [PaymentController::class, 'filter'])->name('payment.filter');
         Route::post('/', [PaymentController::class, 'store'])->name('payment.store');
         Route::post('/update/{id}', [PaymentController::class, 'update'])->name('payment.update');
