@@ -6,8 +6,10 @@ use App\Exports\ExportExcel;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
+use Stripe\Stripe;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentService {
@@ -59,7 +61,40 @@ class PaymentService {
         } catch (\Exception $e) {
             return [Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage()];
         }
+    }
 
+    /**
+     * @param mixed $data
+     *
+     * @return [type]
+     */
+    public function storeStripePaymentInfo($amount, $currency, $source, $description)
+    {
+        try {
+            $payment = $this->payment;
+            Stripe::setApiKey(config('app.stripe_secret'));
+            $details = \Stripe\Charge::create ([
+                    "amount" => $amount,
+                    "currency" => $currency,
+                    "source" => $source,
+                    "description" => $description,
+            ]);
+            if($details && $details->status == "succeeded") {
+                $data['user_id'] = getUserInfo()->id;
+                $data['payment_channel'] = $details->calculated_statement_descriptor;
+                $data['amount'] = $amount;
+                $data['trans_id'] = $details->balance_transaction;
+                $data['status'] = $details->status;
+                $data['ip'] = $_SERVER['REMOTE_ADDR'];
+                $createPayment = $payment->createNewPaymentRequest($data);
+                if($createPayment && $createPayment->id) {
+                    Cache::put("stripe_payment_of_".$createPayment->id, json_encode($details));
+                    return [Response::HTTP_OK, "Payment Request Placed Successfully. Admin will review and confirm your payment record soon."];
+                }
+            }
+        } catch (\Exception $e) {
+            return [Response::HTTP_INTERNAL_SERVER_ERROR, $e->getMessage()];
+        }
     }
     /**
      * @param mixed $data

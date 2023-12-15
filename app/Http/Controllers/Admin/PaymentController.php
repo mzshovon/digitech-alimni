@@ -18,6 +18,25 @@ class PaymentController extends Controller
         $data['payments'] = $paymentService->getPaymentData();
         return view("admin.payment.index", $data);
     }
+
+    public function charge(PaymentService $paymentService)
+    {
+        $data['title'] = "Stripe Payment";
+        return view("admin.payment.charge", $data);
+    }
+
+    public function stripePayment(Request $request, PaymentService $paymentService)
+    {
+        // dd(config('app.stripe_key'));
+        $amount = $request->amount ?? 1000;
+        $currency = "USD";
+        $source = $request->stripeToken;
+        $description = "From Shovon & Team";
+        [$status, $message] = $paymentService->storeStripePaymentInfo($amount, $currency, $source, $description);
+        Session::put(($status == Response::HTTP_OK) ? "success" : "error", $message);
+        return back();
+    }
+
     public function filter(Request $request, PaymentService $paymentService)
     {
         $from = $request->get('from') ? Carbon::parse($request->get('from'))->format('Y-m-d') : null;
