@@ -13,4 +13,5 @@ enum FeatureEnum: string {
     case NewsLetter = 'newsletter';
     case Members = 'members';
     case Payment = 'payment';
+    case Election = 'election';
 }
