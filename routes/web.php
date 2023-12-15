@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUtilityController;
+use App\Http\Controllers\Admin\ElectionController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\NewsLetterController;
 use App\Http\Controllers\Admin\PaymentController;
@@ -47,7 +48,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::get('/', [AdminUtilityController::class, 'getActivityLogs'])->name('activityLogs');
     });
 
-    // User routes
+    // Member routes
     Route::group(['prefix' => 'member'], function() {
         Route::get('/', [UserController::class, 'getUsers'])->name('usersList')->middleware('visitors:member');
         Route::get('/filter', [UserController::class, 'filter'])->name('usersFilter');
@@ -59,6 +60,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         // Role assign to user
         Route::post('/assign-membersip-id', [UserController::class, 'assignMembershipId'])->name('assignMembershipIdToUser');
     });
+
+    // Member routes
+    Route::group(['prefix' => 'election'], function() {
+        Route::get('/', [ElectionController::class, 'view'])->name('electionsList')->middleware('visitors:election');
+        Route::get('/filter', [UserController::class, 'filter'])->name('electionsFilter');
+        Route::get('/create', [UserController::class, 'createUser'])->name('createElection');
+        Route::post('/store', [UserController::class, 'storeUser'])->name('storeElection');
+        Route::get('/edit/{userId}', [UserController::class, 'edituser'])->name('editElection');
+        Route::post('/update', [UserController::class, 'updateUser'])->name('updateElection');
+        Route::delete('/delete/{userId}', [UserController::class, 'deleteUser'])->name('deleteElection');
+        // Role assign to user
+        Route::post('/assign-membersip-id', [UserController::class, 'assignMembershipId'])->name('assignMembershipIdToUser');
+    });
+
     // User routes
     Route::group(['prefix' => 'user-profile'], function() {
         Route::get('/', [UserController::class, 'profile'])->name('profile');
@@ -66,6 +81,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::post('/reset/password', [UserController::class, 'resetPassword'])->name('profile.reset-password');
     });
 
+    // Contact routes
     Route::group(['prefix' => 'contact'], function() {
         Route::get('/', [UtilityController::class, 'contactUsView'])->name('contact');
         Route::post('/', [UtilityController::class, 'storeAndSendContactMessage'])->name('contact.submit');

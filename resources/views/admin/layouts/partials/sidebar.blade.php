@@ -24,7 +24,7 @@
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
 
         @if (auth()->user()->hasRole("superadmin") || auth()->user()->hasRole("admin"))
             <li class="nav-item">
@@ -33,7 +33,7 @@
                     <i class="bi bi-people"></i>
                     <span>Members</span>
                 </a>
-            </li><!-- End Dashboard Nav -->
+            </li>
         @endif
         <li class="nav-item">
             <a class="nav-link {{ in_array($route, ['admin.payment']) ? 'nav-item-active-a' : 'collapsed' }}"
@@ -41,32 +41,28 @@
                 <i class="bi bi-cash"></i>
                 <span>Payment</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
         <li class="nav-item">
             <a class="nav-link {{ in_array($route, ['admin.contact']) ? 'nav-item-active-a' : 'collapsed' }}"
                 href="{{ route('admin.contact') }}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact Us</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
         <li class="nav-item">
             <a class="nav-link {{ in_array($route, ['admin.newsletter']) ? 'nav-item-active-a' : 'collapsed' }}"
                 href="{{ route('admin.newsletter') }}">
                 <i class="bi bi-newspaper"></i>
                 <span>Newsletter</span>
             </a>
-        </li><!-- End Dashboard Nav -->
-
-{{--
-        <li class="nav-heading">Pages</li>
-
+        </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-error-404.html">
-                <i class="bi bi-dash-circle"></i>
-                <span>Error 404</span>
+            <a class="nav-link {{ in_array($route, ['admin.electionsList']) ? 'nav-item-active-a' : 'collapsed' }}"
+                href="{{ route('admin.electionsList') }}">
+                <i class="bi bi-person-bounding-box"></i>
+                <span>Election</span>
             </a>
-        </li><!-- End Error 404 Page Nav --> --}}
-
+        </li>
     </ul>
 
-</aside><!-- End Sidebar-->
+</aside>

@@ -17,33 +17,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endforeach
-          <div class="card col-xs-6 col-md-6 offset-2">
+          <div class="card col-xs-3 col-md-3 offset-4">
             <div class="card-body pt-3">
-              <div class="tab-content pt-2">
-                <div class="t" id="profile-edit">
-                  <!-- Profile Edit Form -->
-                  <div class="panel-body">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/2560px-Stripe_Logo%2C_revised_2016.svg.png" height="80" width="180" style="margin: auto; display:block">
                     <br>
                     <form role="form" action="{{ route('admin.payment.stripe') }}" method="post" class="require-validation" data-cc-on-file="false" data-stripe-publishable-key="{{ config('app.stripe_key') }}" id="payment-form">
                        @csrf
                        <div class='form-row row'>
-                          <div class='col-xs-12 col-md-12 form-group required'>
+                          <div class='col-xs-12 col-md-12 form-group pt-3 required'>
                              <label class='control-label'>Name on Card</label>
                              <input class='form-control' size='4' type='text'>
                           </div>
-                          <div class='col-xs-12 col-md-12 form-group required'>
+                          <div class='col-xs-12 col-md-12 form-group pt-3 required'>
                              <label class='control-label'>Card Number</label>
                              <input autocomplete='off' class='form-control card-number' size='20' type='text'>
                           </div>
-                          <div class='col-xs-12 col-md-12 form-group cvc required'>
+                          <div class='col-xs-12 col-md-12 form-group pt-3 cvc required'>
                              <label class='control-label'>CVC</label>
                              <input autocomplete='off' class='form-control card-cvc' placeholder='ex. 311' size='3' maxlength="3" type='text'>
                           </div>
-                          <div class='col-xs-12 col-md-12 form-group expiration required'>
+                          <div class='col-xs-12 col-md-12 form-group pt-3 expiration required'>
                              <label class='control-label'>Expiration Month</label>
                              <input class='form-control card-expiry-month' placeholder='MM' size='2' maxlength="2" type='text'>
                           </div>
-                          <div class='col-xs-12 col-md-12 form-group expiration required'>
+                          <div class='col-xs-12 col-md-12 form-group pt-3 expiration required'>
                              <label class='control-label'>Expiration Year</label>
                              <input class='form-control card-expiry-year' placeholder='YYYY' size='4' maxlength="4" type='text'>
                           </div>
@@ -51,12 +48,14 @@
                        <br>
                        <div class="form-row row">
                           <div class="col-xs-12">
-                             <button class="btn btn-primary btn-md btn-block" type="submit">Pay Now</button>
+                             <button class="btn btn-primary btn-md btn-block" type="submit">Pay Now <i class="bi bi-cash"></i></button>
                           </div>
                        </div>
                     </form>
-
-      </div>
+                </div>
+              </div>
+            </div>
+        </div>
     </section>
 
   </main><!-- End #main -->
