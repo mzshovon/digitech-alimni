@@ -12,4 +12,5 @@ enum StatusEnum: string {
     case Pending = 'pending';
     case Freeze = 'freeze';
     case Paused = 'paused';
+    case Running = 'running';
 }

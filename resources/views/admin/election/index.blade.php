@@ -28,11 +28,16 @@
                                         onclick="createEditModalShow(null,null,null,null)">Add Election</a>
                                     </h5>
                             </div>
+                            @foreach ($errors->all() as $error)
+                                <div class="alert alert-danger alert-dismissible fade show">{{ $error }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endforeach
                             @if (auth()->user()->hasRole('superadmin'))
                             <div class="card">
                                 <div class="card-header">Filter</div>
                                 <div class="card-body pt-4 pb-4">
-                                    <form class="row" method="GET" action="{{route('admin.payment.filter')}}">
+                                    <form class="row" method="GET" action="{{route('admin.electionsFilter')}}">
                                         @csrf
                                         {{-- <div class="col-md-3">
                                             <div class="input-group">
@@ -123,7 +128,7 @@
                                 <form id="submitModalForm" action="{{ route('admin.storeElection') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Payment</h5>
+                                        <h5 class="modal-title">Election</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -138,6 +143,12 @@
                                             <br>
                                             <input type="text" class="form-control" id="validationDefault01" placeholder="End Date" name="end_date"
                                                 onfocus="(this.type='date')" onblur="(this.type='text')" required>
+                                            <br>
+                                            <select class="form-select" name="status" aria-label="Default select example" id="id_status">
+                                                <option disabled selected>Select Status...</option>
+                                                <option value={{\App\Http\Enums\StatusEnum::Paused->value}}>{{ucfirst(\App\Http\Enums\StatusEnum::Paused->value)}}</option>
+                                                <option value={{\App\Http\Enums\StatusEnum::Running->value}}>{{ucfirst(\App\Http\Enums\StatusEnum::Running->value)}}</option>
+                                            </select>
                                             <br>
                                         </div>
                                     </div>
@@ -165,31 +176,35 @@
                 placeholder: 'Select columns'
             });
         });
-        function createEditModalShow(payment_channel, amount, transId, userId) {
-            console.log(payment_channel);
-            if (payment_channel) {
-                $("#option_id" + payment_channel).prop('selected', true);
+        function createEditModalShow(title, start_date, end_date, status, electionId) {
+            if (status) {
+                $("#id_status" + status).prop('selected', true);
             } else {
-                $('#id_payment_channel').find($('option')).prop('selected', false);
+                $('#id_status').find($('option')).prop('selected', false);
             }
-            if (amount) {
-                $("#id_amount").val(amount);
+            if (title) {
+                $("#id_title").val(title);
             } else {
-                $("#id_amount").val('');
+                $("#id_title").val('');
             }
-            if (transId) {
-                $("#id_trans_id").val(transId);
+            if (start_date) {
+                $("#id_start_date").val(start_date);
             } else {
-                $("#id_trans_id").val('');
+                $("#id_start_date").val('');
             }
-            if (userId) {
-                $("#id_user").val(userId);
-                var url = '{{ route('admin.payment.update', ':userId') }}';
-                url = url.replace(':userId', userId);
+            if (end_date) {
+                $("#id_end_date").val(end_date);
+            } else {
+                $("#id_end_date").val('');
+            }
+            if (electionId) {
+                $("#id_user").val(electionId);
+                var url = '{{ route('admin.updateElection', ':electionId') }}';
+                url = url.replace(':electionId', electionId);
                 $('#submitModalForm').attr('action', url);
             } else {
                 $("#id_user").val('');
-                $('#submitModalForm').attr('action', `{{ route('admin.payment') }}`);
+                $('#submitModalForm').attr('action', `{{ route('admin.storeElection') }}`);
             }
             $("#create-or-edit-modal").modal('show')
         }

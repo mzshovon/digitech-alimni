@@ -9,6 +9,15 @@ class Election extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'status',
+        'start_date',
+        'end_date',
+        'created_by',
+        'updated_by',
+    ];
+
     public function getElections($userId = null, array|null $values = null, $from = null, $to = null, $status = null, $order = "DESC")
     {
         $data = $this->orderBy("updated_at", $order);
@@ -20,5 +29,10 @@ class Election extends Model
             $q->get($values);
         });
         return $data->get()->toArray();
+    }
+
+    public static function createNewElectionRequest(array $data)
+    {
+        return self::create($data);
     }
 }

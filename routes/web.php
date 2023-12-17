@@ -64,14 +64,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     // Member routes
     Route::group(['prefix' => 'election'], function() {
         Route::get('/', [ElectionController::class, 'view'])->name('electionsList')->middleware('visitors:election');
-        Route::get('/filter', [UserController::class, 'filter'])->name('electionsFilter');
-        Route::get('/create', [UserController::class, 'createUser'])->name('createElection');
-        Route::post('/store', [UserController::class, 'storeUser'])->name('storeElection');
-        Route::get('/edit/{userId}', [UserController::class, 'edituser'])->name('editElection');
+        Route::get('/filter', [ElectionController::class, 'filter'])->name('electionsFilter');
+        Route::post('/store', [ElectionController::class, 'store'])->name('storeElection');
+        Route::get('/edit/{electionId}', [UserController::class, 'edituser'])->name('editElection');
         Route::post('/update', [UserController::class, 'updateUser'])->name('updateElection');
-        Route::delete('/delete/{userId}', [UserController::class, 'deleteUser'])->name('deleteElection');
-        // Role assign to user
-        Route::post('/assign-membersip-id', [UserController::class, 'assignMembershipId'])->name('assignMembershipIdToUser');
+        Route::delete('/delete/{electionId}', [UserController::class, 'deleteUser'])->name('deleteElection');
     });
 
     // User routes

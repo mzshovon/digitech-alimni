@@ -57,12 +57,25 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ in_array($route, ['admin.electionsList']) ? 'nav-item-active-a' : 'collapsed' }}"
-                href="{{ route('admin.electionsList') }}">
-                <i class="bi bi-person-bounding-box"></i>
-                <span>Election</span>
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" aria-expanded="false">
+              <i class="bi bi-person-bounding-box"></i><span>Election Panel</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-        </li>
+            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav" style="">
+              <li>
+                <a class="nav-link {{ in_array($route, ['admin.electionsList']) ? 'nav-item-active-a' : 'collapsed' }}"
+                    href="{{ route('admin.electionsList') }}">
+                    <i class="bi bi-circle"></i>
+                    <span>Election</span>
+                </a>
+              </li>
+              <li>
+                <a class="nav-link {{ in_array($route, ['admin.electionsList']) ? 'nav-item-active-a' : 'collapsed' }}"
+                    href="{{ route('admin.electionsList') }}">
+                    <i class="bi bi-circle"></i>
+                    <span>Position</span>
+                </a>
+              </li>
+          </li>
     </ul>
 
 </aside>
