@@ -20,14 +20,19 @@ class UserService {
 
     public function __construct(private User $user, private MembershipDetail $membershipDetail){}
 
-    public function getUsersInfo()
+    public function getUsersInfo($batch, $payment, $blood_group)
     {
-        return $this->user->getUsersList() ?? [];
+        return $this->user->getUsersList(null, [], null, null, $payment, $blood_group, $batch) ?? [];
     }
 
     public function getUserInfoById($userId)
     {
         return $this->user->getSingleUserByParam("id", $userId) ?? null;
+    }
+
+    public function getUserListByKeyword($keyword)
+    {
+        return $this->user->getUsersListByKeywordSearch($keyword) ?? [];
     }
 
     public function filterUsersData($from, $to, $payment, $blood_group, $batch)

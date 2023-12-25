@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\UpdateUserRequest;
@@ -11,6 +11,7 @@ use App\Http\Services\User\UserService;
 use App\Models\Role;
 use App\Models\User;
 use App\Rules\MatchOldPassword;
+use App\Traits\ApiResponser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+    use ApiResponser;
+
     public function getUsers(Request $request, UserService $userService){
         try {
             $batch = $request->batch ?? null;
@@ -30,10 +33,32 @@ class UserController extends Controller
             // dd($data['users']);
             $data['title'] = "Members List";
             $data['roles'] = Role::all();
-            return view('admin.user.index', $data);
+            return $this->success($data, "Users Found");
 
-        } catch (\Throwable $th) {
-            return $th;
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getTrace(), $e->getCode());
+        }
+    }
+    public function getUserById(UserService $userService, $id){
+        try {
+            $data['user'] = $userService->getUserInfoById($id);
+            $data['title'] = "Members List";
+            return $this->success($data, "User Found");
+
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getTrace(), $e->getCode());
+        }
+    }
+
+    public function getUserBySearchkeyWord(Request $request, UserService $userService){
+        try {
+            $keyword = $request->keyword;
+            $data['users'] = $userService->getUserListByKeyword($keyword);
+            $data['title'] = "Searched List";
+            return $this->success($data, "User Found");
+
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage(), $e->getTrace(), $e->getCode());
         }
     }
 

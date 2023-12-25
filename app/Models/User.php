@@ -80,6 +80,24 @@ class User extends Authenticatable
         return $values ? $data->get($values)->toArray() : $data->get()->toArray();
     }
 
+    public function getUsersListByKeywordSearch($keyword)
+    {
+        $data = $this->with("members","roles")->orderBy("updated_at", "DESC")
+                ->orWhere('name', 'LIKE', "%$keyword%")
+                ->orWhere('email', 'LIKE', "%$keyword%")
+                ->orWhereHas('members', function($sq) use ($keyword) {
+                    $sq->where('batch', 'LIKE', "%$keyword%");
+                })
+                ->orWhereHas('members', function($sq) use ($keyword) {
+                    $sq->where('address', 'LIKE', "%$keyword%");
+                })
+                ->orWhereHas('members', function($sq) use ($keyword) {
+                    $sq->where('payment', 'LIKE', "%$keyword%");
+                });
+
+        return $data->get()->toArray() ?? [];
+    }
+
     public function getUserValueList($values)
     {
         $data = $this->with("members","roles")->whereHas('roles', function($q) {
@@ -96,7 +114,7 @@ class User extends Authenticatable
      */
     public static function getSingleUserByParam(string $whereParam, $value)
     {
-        return self::where($whereParam, $value)->first();
+        return self::with("members","roles")->where($whereParam, $value)->first();
     }
 
     /**
